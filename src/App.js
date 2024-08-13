@@ -1,5 +1,5 @@
 // import logo from './logo.svg';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import './App.css';
 
 const products = [
@@ -22,9 +22,12 @@ const App = () => {
     <div className="App">
       <header className="App-header">
         <p>I am a React Person</p>
-        <Counter></Counter>
+        {/* <Counter></Counter>
         {productMap}
-        {personMap}
+        {personMap} */}
+        {/* <Users></Users> */}
+        {/* <Posts></Posts> */}
+        <Todos></Todos>
       </header>
     </div>
   );
@@ -70,6 +73,69 @@ const Counter = () => {
       <h1>Count: {count}</h1>
       <button onMouseMove={handleDecrese}>Decrease</button>
       <button onClick={handleIncrease}>Increase</button>
+    </div>
+  )
+};
+
+const Users = () => {
+  let [users, setUsers] = useState([]);
+  useEffect(() => {
+    fetch('https://jsonplaceholder.typicode.com/users')
+    .then(res => res.json())
+    .then(data => {
+    setUsers(data)
+    });
+  }, [])
+ 
+  return (
+    <div>
+      <h3>Dynamic Users: {users.length}</h3>
+      {console.log(users)}
+      <ul>
+        {users.map(user => <li>{user.username}</li>)}
+      </ul>
+    </div>
+  )
+}
+
+const Posts = (props) =>{
+  let [post, setPost] = useState([]);
+  useEffect(() =>{
+    fetch('https://jsonplaceholder.typicode.com/posts')
+    .then(res => res.json())
+    .then(data => {
+      setPost(data)
+    })
+  }, []);
+
+  return(
+    <div style={{width: '500px', border: '1px solid #ccc', borderRadius: '5px', }}>
+      <h2>Dynamic Post: {post.length}</h2>
+      {console.log(post)}
+      <ul>
+        {
+          post.map(pt => <li>{pt.body}</li> )
+        }
+      </ul>
+    </div>
+  )
+};
+
+
+const Todos = (props) =>{
+  let [todos, setTodos] = useState([]);
+  useEffect(() =>{
+    fetch('https://jsonplaceholder.typicode.com/todos').then(res => res.json()).then(data => setTodos(data))
+  }, []);
+
+  return(
+    <div>
+      <h2>Dynammic Todos: {todos.length}</h2>
+      <ul>
+        {
+          todos.map(td => <li>{td.title}</li>)
+        }
+      </ul>
     </div>
   )
 }
